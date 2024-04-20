@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from dotenv import load_dotenv
 
@@ -8,6 +9,7 @@ load_dotenv()
 
 app = Flask(__name__)
 uri = os.environ.get('MONGO_URI')
+cors = CORS(app, supports_credentials=True)
 client = MongoClient(uri)
 
 db = client['bitcamp2024']

@@ -25,3 +25,4 @@ msgpack~=1.0.8
 pyasn1_modules~=0.4.0
 Flask~=3.0.3
 python-dotenv~=1.0.1
+flask_cors
