@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from flask import Flask, jsonify, json, request
 from flask_cors import CORS
@@ -27,20 +28,37 @@ def add_chore():
 
     if group_name != "":
         try:
-            client['chores'][group_name].insert_one({"chore": chore, "due": dt})
+            client['chores'][group_name].insert_one({"chore": chore, "due": dt, "chore_id": uuid.uuid4()})
         except Exception as e:
             print(e)
     else:
         print("No group defined")
 
+
 @app.route("/getchore", methods=['GET'])
 def get_chore():
-    return
+    group_name = request.args.get('group_name', default="", type=str)
+
+    if group_name != "":
+        try:
+            client['chores'][group_name].find({"chore_id": request.args.get('chore_id', type=str)})
+        except Exception as e:
+            print(e)
+    else:
+        print("No group defined")
 
 
 @app.route("/deletechore", methods=['POST'])
 def delete_chore():
-    return
+    group_name = request.args.get('group_name', default="", type=str)
+
+    if group_name != "":
+        try:
+            client['chores'][group_name].delete_one({"chore_id": request.args.get('chore_id', type=str)})
+        except Exception as e:
+            print(e)
+    else:
+        print("No group defined")
 
 
 @app.route('/test')
