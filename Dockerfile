@@ -8,16 +8,13 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Copy the rest of the application code into the container
 COPY . .
 
-# Expose the port on which your Flask app will run
-EXPOSE 5000
-
 # Set environment variables if necessary
-# ENV VARIABLE_NAME=value
+ENV MONGO_URI='mongodb+srv://xilacxilac:zKJETi5FrIQ0fyUH@bitcamp2024.ayaslsf.mongodb.net/?retryWrites=true&w=majority&appName=bitcamp2024'
 
 # Command to run the Flask application
 CMD ["python", "app.py"]
