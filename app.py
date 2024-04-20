@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify
 from pymongo.mongo_client import MongoClient
 from dotenv import load_dotenv
 
@@ -14,6 +14,10 @@ db = client['bitcamp2024']
 collection = db["pp"]
 
 test = {"name": "bob", "data": "hello world"}
+
+@app.route('test')
+def test():
+    return jsonify(test)
 
 @app.route('/')
 def hello_world():
