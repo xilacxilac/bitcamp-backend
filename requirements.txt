@@ -28,3 +28,4 @@ CacheControl~=0.14.0
 msgpack~=1.0.8
 PyJWT~=2.8.0
 Flask~=3.0.3
+firebase-admin~=6.5.0
