@@ -26,6 +26,7 @@ test = {"name": "bob", "data": "hello world"}
 
 @app.route('/')
 def hello_world():
+    add_data()
     return 'Hello World!'
 
 if __name__ == '__main__':
