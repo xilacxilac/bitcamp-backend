@@ -5,7 +5,7 @@ from flask import Flask, jsonify, json, request
 from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from Chore import Chore
 
@@ -46,6 +46,20 @@ def get_chore():
             print(e)
     else:
         print("No group defined")
+
+
+def get_chore_today():
+    # gets chores that are due today
+    now = datetime.now()
+    start_of_today = datetime(now.year, now.month, now.day)
+    end_of_today = start_of_today + timedelta(days=1)
+
+    # Query to find chores due today
+    query = {"due_date": {"$gte": start_of_today, "$lt": end_of_today}}
+    chores_due_today = collection.find(query)
+
+    result = list(chores_due_today)
+    return result
 
 
 @app.route("/deletechore", methods=['POST'])
