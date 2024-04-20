@@ -4,6 +4,7 @@ from flask import Flask, jsonify, json, request
 from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from dotenv import load_dotenv
+from datetime import datetime
 
 from Chore import Chore
 
@@ -22,10 +23,11 @@ collection = db["pp"]
 def add_chore():
     group_name = request.args.get('group_name', default="", type=str)
     chore = Chore(request.args)
+    dt = datetime.strptime(request.args.get("datetime", default="2000-01-01 01:00", type=str), "%Y-%m-%d %H:%M")
 
     if group_name != "":
         try:
-            client['chores'][group_name].insert_one({"chore": chore})
+            client['chores'][group_name].insert_one({"chore": chore, "due": dt})
         except Exception as e:
             print(e)
     else:
