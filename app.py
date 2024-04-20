@@ -17,7 +17,7 @@ collection = db["pp"]
 
 test = {"name": "bob", "data": "hello world"}
 
-@app.route('test')
+@app.route('/test')
 def test():
     return jsonify(test)
 
