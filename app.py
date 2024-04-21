@@ -106,14 +106,14 @@ def get_chore_tomorrow():
         return "400"
 
 
-@app.route("/deletechore", methods=['POST'])
-def delete_chore():
+@app.route("/deletechorebyname", methods=['POST'])
+def delete_chore_by_name():
     params = request.json
     group_name = params['group_name']
 
     if group_name != "":
         try:
-            client['chores'][group_name].delete_one({"chore_id": params['chore_id']})
+            client['chores'][group_name].delete_one({"name": params['name']})
             return "200"
         except Exception as e:
             print(e)
