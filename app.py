@@ -22,13 +22,15 @@ collection = db["pp"]
 
 @app.route("/addchore", methods=['POST'])
 def add_chore():
-    group_name = request.json.get('group_name', default="", type=str)
-    chore = Chore(request.json)
-    dt = datetime.strptime(request.json.get("datetime", default="2000-01-01 01:00", type=str), "%Y-%m-%d %H:%M")
+    params = request.json
+    group_name = params['group_name']
+    params['datetime'] = datetime.strptime(request.json['datetime'], "%Y-%m-%d %H:%M")
+    params['chore_id'] = uuid.uuid4()
+    del params['group_name']
 
     if group_name != "":
         try:
-            client['chores'][group_name].insert_one({"chore": chore, "due_date": dt, "chore_id": uuid.uuid4()})
+            client['chores'][group_name].insert_one(params)
             return "200"
         except Exception as e:
             print(e)
