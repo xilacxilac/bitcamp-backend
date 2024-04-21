@@ -7,8 +7,6 @@ from pymongo.mongo_client import MongoClient
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
-from Chore import Chore
-
 load_dotenv()
 
 app = Flask(__name__)
