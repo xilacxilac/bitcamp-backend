@@ -28,27 +28,30 @@ def add_chore():
 
     if group_name != "":
         try:
-            client['chores'][group_name].insert_one({"chore": chore, "due": dt, "chore_id": uuid.uuid4()})
+            client['chores'][group_name].insert_one({"chore": chore, "due_date": dt, "chore_id": uuid.uuid4()})
         except Exception as e:
             print(e)
     else:
         print("No group defined")
 
 
-@app.route("/getchore", methods=['GET'])
-def get_chore():
+@app.route("/getchorebyid", methods=['GET'])
+def get_chore_by_id():
     group_name = request.args.get('group_name', default="", type=str)
 
     if group_name != "":
         try:
-            client['chores'][group_name].find({"chore_id": request.args.get('chore_id', type=str)})
+            return client['chores'][group_name].find({"chore_id": request.args.get('chore_id', type=str)})
         except Exception as e:
             print(e)
     else:
         print("No group defined")
 
 
+@app.route("/getchoretoday", methods=['GET'])
 def get_chore_today():
+    group_name = request.args.get('group_name', default="", type=str)
+
     # gets chores that are due today
     now = datetime.now()
     start_of_today = datetime(now.year, now.month, now.day)
@@ -56,7 +59,24 @@ def get_chore_today():
 
     # Query to find chores due today
     query = {"due_date": {"$gte": start_of_today, "$lt": end_of_today}}
-    chores_due_today = collection.find(query)
+    chores_due_today = client['chores'][group_name].find(query)
+
+    result = list(chores_due_today)
+    return result
+
+
+@app.route("/getchoretomorrow", methods=['GET'])
+def get_chore_today():
+    group_name = request.args.get('group_name', default="", type=str)
+
+    # gets chores that are due today
+    now = datetime.now()
+    start_of_today = datetime(now.year, now.month, now.day) + timedelta(days=1)
+    end_of_today = start_of_today + timedelta(days=2)
+
+    # Query to find chores due today
+    query = {"due_date": {"$gte": start_of_today, "$lt": end_of_today}}
+    chores_due_today = client['chores'][group_name].find(query)
 
     result = list(chores_due_today)
     return result
