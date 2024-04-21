@@ -38,25 +38,9 @@ def add_chore():
         return "400"
 
 
-@app.route("/getchores", methods=['GET'])
-def get_chores():
-    params = request.json
-    group_name = params['group_name']
-
-    if group_name != "":
-        try:
-            return client['chores'][group_name].find({})
-        except Exception as e:
-            print(e)
-            return "400"
-    else:
-        print("No group defined")
-        return "400"
-
-
 @app.route("/getchoretoday", methods=['GET'])
 def get_chore_today():
-    params = request.json
+    params = request.args
     group_name = params['group_name']
 
     if group_name != "":
@@ -79,7 +63,7 @@ def get_chore_today():
 
 @app.route("/getchoretomorrow", methods=['GET'])
 def get_chore_tomorrow():
-    params = request.json
+    params = request.args
     group_name = params['group_name']
 
     if group_name != "":
