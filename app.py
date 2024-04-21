@@ -23,7 +23,7 @@ def add_chore():
     params = request.json
     group_name = params['group_name']
     params['datetime'] = datetime.strptime(request.json['datetime'], "%Y-%m-%d %H:%M")
-    params['chore_id'] = uuid.uuid4()
+    params['chore_id'] = str(uuid.uuid4())
     del params['group_name']
 
     if group_name != "":
