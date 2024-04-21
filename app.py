@@ -46,12 +46,17 @@ def get_chore_today():
     if group_name != "":
         try:
             now = datetime.now()
-            start_of_today = datetime(now.year, now.month, now.day)
-            end_of_today = start_of_today + timedelta(days=1)
+            start_of_today = datetime(now.year, now.month, now.day, now.hour, now.minute)
+            end_of_today = datetime(now.year, now.month, now.day) + timedelta(days=1)
 
             query = {"due_date": {"$gte": start_of_today, "$lt": end_of_today}}
+
+            result = []
             chores_due_today = client['chores'][group_name].find(query)
-            result = list(chores_due_today)
+            for x in chores_due_today:
+                del x["_id"]
+                del x["chore_id"]
+                result.append(x)
             return result
         except Exception as e:
             print(e)
@@ -73,9 +78,13 @@ def get_chore_tomorrow():
             end_of_today = start_of_today + timedelta(days=2)
 
             query = {"due_date": {"$gte": start_of_today, "$lt": end_of_today}}
-            chores_due_today = client['chores'][group_name].find(query)
 
-            result = list(chores_due_today)
+            result = []
+            chores_due_tomorrow = client['chores'][group_name].find(query)
+            for x in chores_due_tomorrow:
+                del x["_id"]
+                del x["chore_id"]
+                result.append(x)
             return result
         except Exception as e:
             print(e)
