@@ -19,6 +19,13 @@ db = client['bitcamp2024']
 collection = db["pp"]
 
 
+def chore_name_exists(group_name, chore_name):
+    for x in client['chores'][group_name].find():
+        if x["name"] is chore_name:
+            return True
+    return False
+
+
 @app.route("/addchore", methods=['POST'])
 def add_chore():
     params = request.json
@@ -28,11 +35,15 @@ def add_chore():
     del params['group_name']
 
     if group_name != "":
-        try:
-            client['chores'][group_name].insert_one(params)
-            return "200"
-        except Exception as e:
-            print(e)
+        if not chore_name_exists(group_name, params['name']):
+            try:
+                client['chores'][group_name].insert_one(params)
+                return "200"
+            except Exception as e:
+                print(e)
+                return "400"
+        else:
+            print("Chore Name Exists")
             return "400"
     else:
         print("No group defined")
