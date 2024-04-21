@@ -106,7 +106,7 @@ def get_chore_tomorrow():
         return "400"
 
 
-@app.route("/deletechorebyname", methods=['POST'])
+@app.route("/deletechorebyname", methods=['GET'])
 def delete_chore_by_name():
     params = request.json
     group_name = params['group_name']
