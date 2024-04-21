@@ -38,32 +38,14 @@ def add_chore():
         return "400"
 
 
-@app.route("/getchoreid", methods=['GET'])
-def get_chore_id():
-    params = request.json
-    group_name = params['group_name']
-    del params['group_name']
-
-    if group_name != "":
-        try:
-            # NEED TO EXTRACT CHORE_ID
-            return client['chores'][group_name].find(params)
-        except Exception as e:
-            print(e)
-            return "400"
-    else:
-        print("No group defined")
-        return "400"
-
-
-@app.route("/getchorebyid", methods=['GET'])
-def get_chore_by_id():
+@app.route("/getchores", methods=['GET'])
+def get_chores():
     params = request.json
     group_name = params['group_name']
 
     if group_name != "":
         try:
-            return client['chores'][group_name].find({"chore_id": params['chore_id']})
+            return client['chores'][group_name].find({})
         except Exception as e:
             print(e)
             return "400"
