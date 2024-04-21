@@ -6,6 +6,7 @@ from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
+from pytz import timezone
 
 load_dotenv()
 
@@ -45,7 +46,7 @@ def get_chore_today():
 
     if group_name != "":
         try:
-            now = datetime.now()
+            now = datetime.now(timezone('EST'))
             start_of_today = datetime(now.year, now.month, now.day, now.hour, now.minute)
             end_of_today = datetime(now.year, now.month, now.day) + timedelta(days=1)
 
@@ -73,7 +74,7 @@ def get_chore_tomorrow():
 
     if group_name != "":
         try:
-            now = datetime.now()
+            now = datetime.now(timezone('EST'))
             start_of_today = datetime(now.year, now.month, now.day) + timedelta(days=1)
             end_of_today = start_of_today + timedelta(days=2)
 
