@@ -22,7 +22,7 @@ collection = db["pp"]
 def add_chore():
     params = request.json
     group_name = params['group_name']
-    params['datetime'] = datetime.strptime(request.json['datetime'], "%Y-%m-%d %H:%M")
+    params['due_date'] = datetime.strptime(request.json['due_date'], "%Y-%m-%d %H:%M")
     params['chore_id'] = str(uuid.uuid4())
     del params['group_name']
 
@@ -38,13 +38,32 @@ def add_chore():
         return "400"
 
 
-@app.route("/getchorebyid", methods=['GET'])
-def get_chore_by_id():
-    group_name = request.json.get('group_name', default="", type=str)
+@app.route("/getchoreid", methods=['GET'])
+def get_chore_id():
+    params = request.json
+    group_name = params['group_name']
+    del params['group_name']
 
     if group_name != "":
         try:
-            return client['chores'][group_name].find({"chore_id": request.json.get('chore_id', type=str)})
+            # NEED TO EXTRACT CHORE_ID
+            return client['chores'][group_name].find(params)
+        except Exception as e:
+            print(e)
+            return "400"
+    else:
+        print("No group defined")
+        return "400"
+
+
+@app.route("/getchorebyid", methods=['GET'])
+def get_chore_by_id():
+    params = request.json
+    group_name = params['group_name']
+
+    if group_name != "":
+        try:
+            return client['chores'][group_name].find({"chore_id": params['chore_id']})
         except Exception as e:
             print(e)
             return "400"
@@ -55,7 +74,8 @@ def get_chore_by_id():
 
 @app.route("/getchoretoday", methods=['GET'])
 def get_chore_today():
-    group_name = request.json.get('group_name', default="", type=str)
+    params = request.json
+    group_name = params['group_name']
 
     if group_name != "":
         try:
@@ -77,7 +97,8 @@ def get_chore_today():
 
 @app.route("/getchoretomorrow", methods=['GET'])
 def get_chore_tomorrow():
-    group_name = request.json.get('group_name', default="", type=str)
+    params = request.json
+    group_name = params['group_name']
 
     if group_name != "":
         try:
@@ -100,11 +121,12 @@ def get_chore_tomorrow():
 
 @app.route("/deletechore", methods=['POST'])
 def delete_chore():
-    group_name = request.json.get('group_name', default="", type=str)
+    params = request.json
+    group_name = params['group_name']
 
     if group_name != "":
         try:
-            client['chores'][group_name].delete_one({"chore_id": request.json.get('chore_id', type=str)})
+            client['chores'][group_name].delete_one({"chore_id": params['chore_id']})
             return "200"
         except Exception as e:
             print(e)
