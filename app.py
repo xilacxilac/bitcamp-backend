@@ -66,7 +66,7 @@ def get_chore_today():
 
 
 @app.route("/getchoretomorrow", methods=['GET'])
-def get_chore_today():
+def get_chore_tomorrow():
     group_name = request.args.get('group_name', default="", type=str)
 
     # gets chores that are due today
