@@ -22,7 +22,8 @@ collection = db["pp"]
 
 @app.route("/addchore", methods=['POST'])
 def add_chore():
-    print(request.json())
+    print(request.json)
+    print(request)
     group_name = request.args.get('group_name', default="", type=str)
     chore = Chore(request.args)
     dt = datetime.strptime(request.args.get("datetime", default="2000-01-01 01:00", type=str), "%Y-%m-%d %H:%M")
