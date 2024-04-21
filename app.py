@@ -108,7 +108,7 @@ def get_chore_tomorrow():
 
 @app.route("/deletechorebyname", methods=['GET'])
 def delete_chore_by_name():
-    params = request.json
+    params = request.args
     group_name = params['group_name']
 
     if group_name != "":
